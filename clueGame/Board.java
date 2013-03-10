@@ -15,6 +15,7 @@ import clueGame.RoomCell.DoorDirection;
 
 public class Board {
 	
+	//All instance variables needed for the board class.
 	private ArrayList<BoardCell> cells;
 	private Map<Character, String> rooms;
 	private Map<Integer, LinkedList<Integer>> adjMtx;
@@ -22,90 +23,92 @@ public class Board {
 	private boolean[] visited;
 	private int numRows;
 	private int numColumns;
-	String config;
-	String legend;
+	String configFileName;
+	String legendFileName;
 	
+	//Initializes board with default file names.
 	public Board() {
-		super();
 		cells = new ArrayList<BoardCell>();
 		rooms = new HashMap<Character, String>();
 		adjMtx = new HashMap<Integer, LinkedList<Integer>>();
 		targets = new HashSet<BoardCell>();
-		numRows = 0;
-		numColumns = 0;
-		config = "ClueConfig.csv";
+		configFileName = "ClueConfig.csv";
 	}
 	
 	
-
-	public Board(String filename, String legend) {
-		super();
+	//Initializes board given filenames for both the legend and configuration files.
+	public Board(String configFileName, String legendFileName) {
 		cells = new ArrayList<BoardCell>();
 		rooms = new HashMap<Character, String>();
 		adjMtx = new HashMap<Integer, LinkedList<Integer>>();
 		targets = new HashSet<BoardCell>();
-		numRows = 0;
-		numColumns = 0;
-		this.config = filename;
-		this.legend = legend;
+		this.configFileName = configFileName;
+		this.legendFileName = legendFileName;
 	}
 
 
-
+	//Loads the configuration of the board by calling helper functions.
 	public void loadConfigFiles() throws BadConfigFormatException{
 		loadRoomConfig();
 		loadBoardConfig();
 		calcAdjacencies();
 	}
 	
+	/* Loads the names of the rooms and their matching characters. This is done by reading 
+	 * from the configuration file with a format such as: L, Library . It then takes this 
+	 * line and splits it into an array that is stored like this: {L, Library} so that each 
+	 * element can be accessed separately and stored into the rooms map for use in setting 
+	 * up the board later.
+	 */
 	public void loadRoomConfig() throws BadConfigFormatException{
 		try {
-			FileReader reader = new FileReader(legend);
-			Scanner scan = new Scanner(reader);
+			FileReader reader = new FileReader(legendFileName);
+			Scanner input = new Scanner(reader);
 			String line;
-			String[] split;
-			while(scan.hasNext()){
-				line = scan.nextLine();
-				split = line.split(", ");
-				if(split.length > 2)
+			String[] sepByComma;
+			while(input.hasNext()){
+				line = input.nextLine();
+				sepByComma = line.split(", ");
+				if(sepByComma.length > 2)
 					throw new BadConfigFormatException(this);
 				
-				rooms.put(split[0].charAt(0), split[1]);
+				rooms.put(sepByComma[0].charAt(0), sepByComma[1]);
 			}
-			scan.close();
+			input.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
+	
 	public void loadBoardConfig() throws BadConfigFormatException{
 		
 		try {
-			FileReader reader = new FileReader(config);
-			Scanner scan = new Scanner(reader);
+			FileReader reader = new FileReader(configFileName);
+			Scanner input = new Scanner(reader);
 			String line;
-			String[] split = {" "};
+			String[] sepByComma = {" "};
 			int rowCounter = 0;
 			boolean badRoomFlag = true;
 			numColumns = 0;
-			while(scan.hasNext()){
+			while(input.hasNext()){
 				rowCounter ++;
-				line = scan.nextLine();
-				split = line.split(",");
+				line = input.nextLine();
+				sepByComma = line.split(",");
 				
 				if (numColumns == 0)
-					numColumns = split.length;
+					numColumns = sepByComma.length;
 				
-				if (numColumns != split.length)
+				if (numColumns != sepByComma.length)
 					throw new BadConfigFormatException(this);
 				
-				numColumns = split.length;
+				numColumns = sepByComma.length;
 				
-				for(int i = 0; i < split.length; i++){
+				for(int i = 0; i < sepByComma.length; i++){
 					badRoomFlag = true;
 					for(Character key : rooms.keySet()){
-						if(key == split[i].charAt(0)){
+						if(key == sepByComma[i].charAt(0)){
 							badRoomFlag = false;
 							break;
 						}
@@ -113,40 +116,40 @@ public class Board {
 					if(badRoomFlag)
 						throw new BadConfigFormatException(this);
 					
-					if (split[i].length() > 2)
+					if (sepByComma[i].length() > 2)
 						throw new BadConfigFormatException(this);
 					
 					
-					if(split[i].charAt(0) == 'W'){
+					if(sepByComma[i].charAt(0) == 'W'){
 						cells.add(new WalkwayCell(rowCounter, i+1));
 						continue;
 					}
 					
-					if(split[i].length() > 1){
+					if(sepByComma[i].length() > 1){
 						
-						if(split[i].charAt(1) == 'U')
-							cells.add(new RoomCell(rowCounter, i+1, split[i].charAt(0), DoorDirection.UP));
-						else if(split[i].charAt(1) == 'D')
-							cells.add(new RoomCell(rowCounter, i+1, split[i].charAt(0), DoorDirection.DOWN));
-						else if(split[i].charAt(1) == 'L')
-							cells.add(new RoomCell(rowCounter, i+1, split[i].charAt(0), DoorDirection.LEFT));
-						else if(split[i].charAt(1) == 'R')
-							cells.add(new RoomCell(rowCounter, i+1, split[i].charAt(0), DoorDirection.RIGHT));
+						if(sepByComma[i].charAt(1) == 'U')
+							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.UP));
+						else if(sepByComma[i].charAt(1) == 'D')
+							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.DOWN));
+						else if(sepByComma[i].charAt(1) == 'L')
+							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.LEFT));
+						else if(sepByComma[i].charAt(1) == 'R')
+							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.RIGHT));
 						else
-							cells.add(new RoomCell(rowCounter, i+1, split[i].charAt(0), DoorDirection.NONE));
+							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.NONE));
 						
 					}
 					
-					if(split[i].length() == 1)
-						cells.add(new RoomCell(rowCounter, i+1, split[i].charAt(0), DoorDirection.NONE));
+					if(sepByComma[i].length() == 1)
+						cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.NONE));
 					
-					if(numColumns == split.length){
+					if(numColumns == sepByComma.length){
 						
 					}
 				}
 			}
 			numRows = rowCounter;
-			scan.close();
+			input.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -335,11 +338,11 @@ public class Board {
 	}
 	
 	public String getFilename(){
-		return config;
+		return configFileName;
 	}
 	
 	public String getLegend(){
-		return legend;
+		return legendFileName;
 	}
-
+	
 }
