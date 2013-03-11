@@ -81,75 +81,94 @@ public class Board {
 		
 	}
 	
-	
+	/* Loads all cells into the board, storing the index of each cell and the type
+	 * of the cell based on its character(s).
+	 */
 	public void loadBoardConfig() throws BadConfigFormatException{
 		
 		try {
 			FileReader reader = new FileReader(configFileName);
 			Scanner input = new Scanner(reader);
 			String line;
-			String[] sepByComma = {" "};
+			String[] sepByComma = {""};
 			int rowCounter = 0;
 			boolean badRoomFlag = true;
-			numColumns = 0;
-			while(input.hasNext()){
+			
+			//Read each line until there are no more.
+			while ( input.hasNext() ){
 				rowCounter ++;
 				line = input.nextLine();
 				sepByComma = line.split(",");
 				
+				//The number of columns will be set to the number of rooms in the string.
 				if (numColumns == 0)
 					numColumns = sepByComma.length;
 				
+				//Any subsequent columns with more or less characters will cause a thrown exception.
 				if (numColumns != sepByComma.length)
-					throw new BadConfigFormatException(this);
+					throw new BadConfigFormatException(this);				
 				
-				numColumns = sepByComma.length;
-				
-				for(int i = 0; i < sepByComma.length; i++){
+				//Iterates through each room in the string and creates the appropriate cell.
+				for ( int i = 0; i < sepByComma.length; i++ ) {
+					
 					badRoomFlag = true;
+					int length = sepByComma[i].length();
+					char firstChar = sepByComma[i].charAt(0);
+					
+					//Ensure room exists in key
 					for(Character key : rooms.keySet()){
-						if(key == sepByComma[i].charAt(0)){
+						if(key == firstChar){
 							badRoomFlag = false;
 							break;
 						}
 					}
-					if(badRoomFlag)
+					
+					//Throws an exception if there is no match for the character in the room key.
+					if ( badRoomFlag )
 						throw new BadConfigFormatException(this);
 					
-					if (sepByComma[i].length() > 2)
+					//Throws an exception if a room string is longer than 2 characters.
+					if ( length > 2 )
 						throw new BadConfigFormatException(this);
 					
-					
-					if(sepByComma[i].charAt(0) == 'W'){
+					//If the character is a W, a walkway is created.
+					if ( firstChar == 'W' ) {
 						cells.add(new WalkwayCell(rowCounter, i+1));
 						continue;
 					}
 					
-					if(sepByComma[i].length() > 1){
+					//If its a door, it will create a new RoomCell with appropriate door direction.
+					if ( length > 1 ) {
 						
-						if(sepByComma[i].charAt(1) == 'U')
-							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.UP));
-						else if(sepByComma[i].charAt(1) == 'D')
-							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.DOWN));
-						else if(sepByComma[i].charAt(1) == 'L')
-							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.LEFT));
-						else if(sepByComma[i].charAt(1) == 'R')
-							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.RIGHT));
+						char secondChar = sepByComma[i].charAt(1);
+						
+						if ( secondChar == 'U' )
+							cells.add(new RoomCell(rowCounter, i+1, firstChar, DoorDirection.UP));
+						
+						else if ( secondChar == 'D' )
+							cells.add(new RoomCell(rowCounter, i+1, firstChar, DoorDirection.DOWN));
+						
+						else if ( secondChar == 'L' )
+							cells.add(new RoomCell(rowCounter, i+1, firstChar, DoorDirection.LEFT));
+						
+						else if ( secondChar == 'R' )
+							cells.add(new RoomCell(rowCounter, i+1, firstChar, DoorDirection.RIGHT));
+						
 						else
-							cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.NONE));
+							cells.add(new RoomCell(rowCounter, i+1, firstChar, DoorDirection.NONE));
 						
 					}
 					
-					if(sepByComma[i].length() == 1)
-						cells.add(new RoomCell(rowCounter, i+1, sepByComma[i].charAt(0), DoorDirection.NONE));
-					
-					if(numColumns == sepByComma.length){
-						
-					}
+					//If not a door, creates new room cell.
+					if ( length == 1 )
+						cells.add(new RoomCell(rowCounter, i+1, firstChar, DoorDirection.NONE));			
 				}
 			}
+			
+			//Creates numRows based on the number of rows that were read from the file.
 			numRows = rowCounter;
 			input.close();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -292,7 +311,6 @@ public class Board {
 	// calcTargets to match CR test arguments
 	public void calcTargets(int row, int col, int num){
 		visited = new boolean[numRows*numColumns];
-		Arrays.fill(visited, false);
 		targets = new HashSet<BoardCell>();
 		calcTargets(calcIndex(row, col), num);
 	}
