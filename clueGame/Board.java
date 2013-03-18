@@ -187,9 +187,9 @@ public class Board {
 					// Up
 					if (!cells.get(index).isRoom()) {
 						// Non-Room Cell
-						if (cells.get(index - numColumns).isWalkway()) {	
+						if ( cells.get(index - numColumns).isWalkway() )	
 							adjList.add(index - numColumns);
-						} else if (cells.get(index - numColumns).isDoorway()) {
+						else if ( cells.get(index - numColumns).isDoorway() ) {
 							// Cannot move from a door space to an adjacent door space
 							 if (!(cells.get(index).isDoorway()) )				
 								 // Make sure door is in correct direction
