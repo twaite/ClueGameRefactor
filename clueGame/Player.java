@@ -29,7 +29,7 @@ public class Player {
 		return cards;
 	}
 	
-	public boolean disproveSuggestion(String name, String room, String weapon) {
-		return false;
+	public Card disproveSuggestion(String name, String room, String weapon) {
+		return new Card();
 	}
 }
