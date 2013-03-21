@@ -1,11 +1,10 @@
 package clueGame;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Player {
 	private String name;
-	private List cards;
+	private ArrayList<Card> cards;
 	
 	public Player() {
 		name = null;
@@ -25,11 +24,11 @@ public class Player {
 		return new Card();
 	}
 
-	public String getName(String name) {
+	public String getName() {
 		return name;
 	}
 	
-	public List getCards() {
+	public ArrayList<Card> getCards() {
 		return cards;
 	}
 
