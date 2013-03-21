@@ -21,6 +21,10 @@ public class Player {
 		
 	}
 	
+	public Card disproveSuggestion(String name, String room, String weapon) {
+		return new Card();
+	}
+
 	public String getName(String name) {
 		return name;
 	}
@@ -28,8 +32,5 @@ public class Player {
 	public List getCards() {
 		return cards;
 	}
-	
-	public Card disproveSuggestion(String name, String room, String weapon) {
-		return new Card();
-	}
+
 }
