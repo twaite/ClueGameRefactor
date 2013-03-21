@@ -7,7 +7,7 @@ public class ClueGame {
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
 	private int whoseTurn;
-
+	
 	public void deal() {
 		
 	}
@@ -28,11 +28,11 @@ public class ClueGame {
 	}
 
 	public ArrayList<Player> getPlayers() {
-		return players;
+		return new ArrayList<Player>();
 	}
 
 	public ArrayList<Card> getCards() {
-		return cards;
+		return new ArrayList<Card>();
 	}
 
 	public void setSolution(Solution solution) {

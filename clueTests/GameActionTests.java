@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -20,26 +21,37 @@ import clueGame.Player;
 import clueGame.Solution;
 
 public class GameActionTests {
-		
-	@BeforeClass
-	public static void initialize() {
+	
+	Color purple = new Color(255, 0, 255);
+	Board board;
+	Solution solution;
+	ArrayList<BoardCell> cells;
+	ClueGame game;
+	ArrayList<Player> players;
+	ArrayList<Card> cards;
+	Card mustardCard;
+	Card pipeCard;
+	Card kitchenCard;
+	
+	@Before
+	public void initialize() {
 		
 		Solution solution = new Solution("Miss Scarlet", "Pool Room", "Candlestick");
-		Board board = new Board();
-		ArrayList<BoardCell> cells = board.getCells();
-		ClueGame game = new ClueGame();
+		board = new Board();
+		cells = board.getCells();
+		game = new ClueGame();
 		game.loadConfigFiles();
-		ArrayList<Player> players = game.getPlayers();
-		ArrayList<Card> cards = game.getCards();
-		Card mustardCard = new Card(Card.cardType.PERSON, "Colonel Mustard");
-		Card pipeCard = new Card(Card.cardType.WEAPON, "Lead Pipe");
-		Card kitchenCard = new Card(Card.cardType.ROOM, "Kitchen");
+		players = game.getPlayers();
+		cards = game.getCards();
+		mustardCard = new Card(Card.cardType.PERSON, "Colonel Mustard");
+		pipeCard = new Card(Card.cardType.WEAPON, "Lead Pipe");
+		kitchenCard = new Card(Card.cardType.ROOM, "Kitchen");
 
 	}
 
-	@Before
-	public void setup() {
-
+	@BeforeClass
+	public static void setup() {
+		
 	}
 
 	@Test
@@ -69,10 +81,26 @@ public class GameActionTests {
 
 	@Test
 	public void TestLoadPlayers() {
+		
+		// CHECK THE SIZE OF THE players ARRAYLIST IS CORRECT
+		assertEquals(6, players.size());
+		
 		// CHECK TO SEE THAT THE NAMES ARE CORRECT FOR EACH PLAYER
-		assertEquals("name_here", players.get(0).getName());
-		assertEquals("name_here", players.get(2).getName());
-		assertEquals("name_here", players.get(5).getName());
+		assertEquals("Miss Scarlet", players.get(0).getName());
+		assertEquals("Mr. Green", players.get(1).getName());
+		assertEquals("Mrs. White", players.get(2).getName());
+		assertEquals("Colonel Mustard", players.get(3).getName());
+		assertEquals("Professor Plum", players.get(4).getName());
+		assertEquals("Miss Peacock", players.get(5).getName());
+
+		// CHECK THAT THE COLOR IS CORRECT FOR EACH PLAYER
+		assertEquals(Color.red, players.get(0).getColor());
+		assertEquals(Color.green, players.get(1).getColor());
+		assertEquals(Color.white, players.get(2).getColor());
+		assertEquals(Color.yellow, players.get(3).getColor());
+		assertEquals(purple, players.get(4).getColor());
+		assertEquals(Color.blue, players.get(5).getColor());
+		
 	}
 
 	@Test
@@ -119,18 +147,16 @@ public class GameActionTests {
 
 		//ACCUSATION IS INCORRECT - ALL THREE ARE WRONG
 		assertFalse(game.checkAccusation(new Solution("a", "b", "c")));
-
 	}
 
 	@Test
 	public void TestPickLocation() {
 		ArrayList<BoardCell> possibleTargets = new ArrayList<BoardCell>();
-
 	}
 
 	@Test
 	public void TestDisproveSuggestion() {
-		players.get(0).disproveSuggestion("Mr. Green", "Kitchen", "Knife");
+		
 	}
 
 	@Test
