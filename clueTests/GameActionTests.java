@@ -17,6 +17,7 @@ import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.ClueGame;
 import clueGame.ComputerPlayer;
+import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
 
@@ -192,11 +193,11 @@ public class GameActionTests {
 		// Ensure we have 100 total selections (fail should also ensure)
 		assertEquals(100, loc_0_8_Tot + loc_1_7_Tot + loc_3_7_Tot + loc_4_8_Tot);
 		
-		// Ensure each target was selected more than ten times
-		assertTrue(loc_0_8_Tot > 10);
-		assertTrue(loc_1_7_Tot > 10);
-		assertTrue(loc_3_7_Tot > 10);
-		assertTrue(loc_4_8_Tot > 10);
+		// Ensure each target was selected more than once
+		assertTrue(loc_0_8_Tot > 1);
+		assertTrue(loc_1_7_Tot > 1);
+		assertTrue(loc_3_7_Tot > 1);
+		assertTrue(loc_4_8_Tot > 1);
 	}
 
 	@Test
@@ -217,10 +218,60 @@ public class GameActionTests {
 		assertEquals("Conservatory", player.disproveSuggestion(mustardCard, new Card(Card.cardType.ROOM, "Conservatory"), pipeCard));
 		assertEquals("Mr. Plum", player.disproveSuggestion(new Card(Card.cardType.PERSON, "Mr. Plum"), studyCard, pipeCard));
 		assertEquals(null , player.disproveSuggestion(mustardCard, studyCard, pipeCard));
+		
+		//test one player, multiple possible matches
+		player = new ComputerPlayer();
+		player.addCard(mustardCard);
+		player.addCard(kitchenCard);
+		player.addCard(pipeCard);
+		
+		//Run 100 times
+		int mustardDisp = 0;
+		int kitchenDisp = 0;
+		int pipeDisp = 0;
+		
+		for(int i = 0; i < 100; ++i) {
+			String dispCard = player.disproveSuggestion(scarletCard, studyCard, candlestickCard);
+			if ( dispCard == mustardCard.getName() )
+				mustardDisp++;
+			else if ( dispCard == kitchenCard.getName() )
+				kitchenDisp++;
+			else if ( dispCard == pipeCard.getName() ) 
+				pipeDisp++;
+			else 
+				fail("Gave card player does not have");
+		}
+		
+		//check that each card was given at least once
+		assertTrue( mustardDisp > 1 );
+		assertTrue( kitchenDisp > 1 );
+		assertTrue( pipeDisp > 1 );
+		
+		//test all players are queried
+		players = new ArrayList<Player>();
+		for(int i = 0; i < 5; ++i) {
+			players.add(new ComputerPlayer());
+		}
+		players.get(0).addCard(mustardCard);
+		players.get(1).addCard(scarletCard);
+		players.get(2).addCard(pipeCard);
+		players.get(3).addCard(candlestickCard);
+		players.get(4).addCard(studyCard);
+		players.add(new HumanPlayer());
+		players.get(5).addCard(kitchenCard);
+		
+		Card plumCard = new Card(Card.cardType.PERSON, "Mr. Plum");
+		Card revolverCard = new Card(Card.cardType.WEAPON, "Revolver");
+		Card libraryCard = new Card(Card.cardType.ROOM, "Library");
+		
+		//test no players can disprove
+		assertTrue(game.handleSuggestion(plumCard, revolverCard, libraryCard, players.get(0)) == null);
+	
 	}
+			
 
 	@Test
 	public void TestCreateSuggestion() {
-
+		
 	}
 }
