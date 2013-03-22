@@ -266,7 +266,8 @@ public class GameActionTests {
 		
 		//test no players can disprove
 		assertTrue(game.handleSuggestion(plumCard, revolverCard, libraryCard, players.get(0)) == null);
-	
+		
+		
 	}
 			
 
