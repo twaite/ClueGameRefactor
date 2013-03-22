@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.util.Set;
+import clueGame.BoardCell;
 
 public class ComputerPlayer extends Player {
 	private char lastRoomVisited;
@@ -13,8 +14,8 @@ public class ComputerPlayer extends Player {
 		super(name);
 	}
 	
-	public void pickLocation(Set<BoardCell> targets) {
-		
+	public BoardCell pickLocation(Set<BoardCell> targets) {
+		return new BoardCell();
 	}
 	
 	public void createSuggestion() {

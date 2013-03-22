@@ -32,7 +32,8 @@ public class Board {
 		rooms = new HashMap<Character, String>();
 		adjMtx = new HashMap<Integer, LinkedList<Integer>>();
 		targets = new HashSet<BoardCell>();
-		configFileName = "ClueConfig.csv";
+		configFileName = "ClueLayout.csv";
+		legendFileName = "clueLegend.txt";
 	}
 	
 	

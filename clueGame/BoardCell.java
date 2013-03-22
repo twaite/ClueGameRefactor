@@ -1,9 +1,14 @@
 package clueGame;
 
-public abstract class BoardCell {
+public class BoardCell {
 	
 	Integer row, column;
 	
+	public BoardCell() {
+		row = 0;
+		column = 0;
+	}
+
 	public BoardCell(Integer row, Integer column){
 		this.row = row;
 		this.column = column;
@@ -29,7 +34,6 @@ public abstract class BoardCell {
 		return column;
 	}
 	
-	
-	public abstract void draw();
+	public void draw() {};
 
 }

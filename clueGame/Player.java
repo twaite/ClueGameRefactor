@@ -1,11 +1,14 @@
 package clueGame;
 
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Player {
+	public Color purple = new Color(255, 0, 255);
 	private String name;
-	private List cards;
+	private ArrayList<Card> cards;
+	private Color color;
+	private int location;
 	
 	public Player() {
 		name = null;
@@ -21,15 +24,21 @@ public class Player {
 		
 	}
 	
-	public String getName(String name) {
+	public Card disproveSuggestion(Card name, Card room, Card weapon) {
+		return new Card();
+	}
+
+	public String getName() {
 		return name;
 	}
 	
-	public List getCards() {
-		return cards;
+	public Color getColor() {
+		return Color.red;
 	}
 	
-	public Card disproveSuggestion(String name, String room, String weapon) {
-		return new Card();
+	public ArrayList<Card> getCards() {
+		return cards;
 	}
+
+
 }
