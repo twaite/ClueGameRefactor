@@ -20,8 +20,8 @@ public class ClueGame {
 		
 	}
 	
-	public void handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
-		
+	public String handleSuggestion(Card person, Card room, Card weapon, Player accusingPerson) {
+		return null;
 	}
 
 	public boolean checkAccusation() {
@@ -43,4 +43,5 @@ public class ClueGame {
 	public void setSolution(Solution solution) {
 		this.solution = solution;
 	}
+
 }

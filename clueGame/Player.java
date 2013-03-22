@@ -24,8 +24,8 @@ public class Player {
 		
 	}
 	
-	public Card disproveSuggestion(Card name, Card room, Card weapon) {
-		return new Card();
+	public String disproveSuggestion(Card name, Card room, Card weapon) {
+		return null;
 	}
 
 	public String getName() {
