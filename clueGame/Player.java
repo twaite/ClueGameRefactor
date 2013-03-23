@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Player {
-	public Color purple = new Color(255, 0, 255);
 	private String name;
 	private ArrayList<Card> cards;
 	private Color color;
