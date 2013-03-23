@@ -5,21 +5,26 @@ import clueGame.BoardCell;
 
 public class ComputerPlayer extends Player {
 	private char lastRoomVisited;
+	public Suggestion suggestion;
 	
 	public ComputerPlayer() {
 		super();
 	}
 	
-	public ComputerPlayer(String name) {
-		super(name);
+	public ComputerPlayer(String name, int location) {
+		super(name, location);
 	}
 	
 	public BoardCell pickLocation(Set<BoardCell> targets) {
 		return new BoardCell();
 	}
 	
-	public void createSuggestion() {
+	public void createSuggestion(String room) {
 		
+	}
+	
+	public Suggestion getSuggestion() {
+		return new Suggestion();
 	}
 	
 	public void updateSeen(Card seen) {

@@ -33,7 +33,13 @@ public class GameActionTests {
 	Card mustardCard;
 	Card scarletCard;
 	Card plumCard;
+	Card whiteCard;
+	Card greenCard;
+	Card peacockCard;
 	Card candlestickCard;
+	Card ropeCard;
+	Card daggerCard;
+	Card wrenchCard;
 	Card revolverCard;
 	Card pipeCard;
 	Card studyCard;
@@ -57,10 +63,20 @@ public class GameActionTests {
 		game.loadConfigFiles();
 		players = game.getPlayers();
 		cards = game.getCards();
+		
+		//Characters
 		mustardCard = new Card(Card.cardType.PERSON, "Colonel Mustard");
 		scarletCard = new Card(Card.cardType.PERSON, "Miss Scarlet");
 		plumCard = new Card(Card.cardType.PERSON, "Mr. Plum");
+		whiteCard = new Card(Card.cardType.PERSON, "Mrs. White");
+		greenCard = new Card(Card.cardType.PERSON, "Mr. Green");
+		peacockCard = new Card(Card.cardType.PERSON, "Mrs. Peacock");
+		
+		//Weapons
 		candlestickCard = new Card(Card.cardType.WEAPON, "Candlestick");
+		ropeCard = new Card(Card.cardType.WEAPON, "Rope");
+		daggerCard = new Card(Card.cardType.WEAPON, "Dagger");
+		wrenchCard = new Card(Card.cardType.WEAPON, "Wrench");
 		revolverCard = new Card(Card.cardType.WEAPON, "Revolver");
 		pipeCard = new Card(Card.cardType.WEAPON, "Lead Pipe");
 		kitchenCard = new Card(Card.cardType.ROOM, "Kitchen");
@@ -257,6 +273,7 @@ public class GameActionTests {
 				assertTrue( kitchenDisp > 1 );
 				assertTrue( pipeDisp > 1 );
 	}
+	
 	@Test
 	public void TestPlayersQueried() {
 		//test all players are queried
@@ -277,9 +294,25 @@ public class GameActionTests {
 				Card libraryCard = new Card(Card.cardType.ROOM, "Library");
 	}
 			
-
 	@Test
 	public void TestCreateSuggestion() {
+		ComputerPlayer player = new ComputerPlayer("Miss. Scarlet", board.calcIndex(18, 3));
 		
+		//Show player all but two of each card.
+		player.updateSeen(scarletCard);
+		player.updateSeen(plumCard);
+		player.updateSeen(peacockCard);
+		player.updateSeen(whiteCard);
+		player.updateSeen(pipeCard);
+		player.updateSeen(ropeCard);
+		player.updateSeen(candlestickCard);
+		player.updateSeen(wrenchCard);
+		player.updateSeen(daggerCard);
+		player.createSuggestion("Kitchen");
+		
+		
+		
+		assertEquals("Revolver", player.getSuggestion().getWeapon());
+		assertEquals("Kitchen", player.getSuggestion().getRoom());
 	}
 }

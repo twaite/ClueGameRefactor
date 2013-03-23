@@ -6,8 +6,8 @@ public class HumanPlayer extends Player {
 		super();
 	}
 	
-	public HumanPlayer(String name) {
-		super(name);
+	public HumanPlayer(String name, int location) {
+		super(name, location);
 	}
 	
 }

@@ -15,8 +15,9 @@ public class Player {
 		cards = new ArrayList<Card>();
 	}
 	
-	public Player(String name) {
+	public Player(String name, int location) {
 		this.name = name;
+		this.location = location;
 		cards = new ArrayList<Card>();
 	}
 	
