@@ -20,7 +20,7 @@ public class Card{
 	}
 	
 	public cardType getType() {
-		return null;
+		return type;
 	}
 	
 	public String getName() {

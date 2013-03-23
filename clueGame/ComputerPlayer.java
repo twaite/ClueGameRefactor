@@ -15,6 +15,10 @@ public class ComputerPlayer extends Player {
 		super(name, location);
 	}
 	
+	public ComputerPlayer(String name, int location, String color) {
+		super(name, location, color);
+	}
+	
 	public BoardCell pickLocation(Set<BoardCell> targets) {
 		return new BoardCell();
 	}

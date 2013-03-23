@@ -10,6 +10,10 @@ public class HumanPlayer extends Player {
 		super(name, location);
 	}
 	
+	public HumanPlayer(String name, int location, String color) {
+		super(name, location, color);
+	}
+	
 	public void createSuggestion(String person, String room, String weapon) {
 		
 	}

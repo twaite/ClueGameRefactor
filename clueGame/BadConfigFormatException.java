@@ -44,6 +44,10 @@ public class BadConfigFormatException extends Exception {
 		}
 	}
 	
+	public BadConfigFormatException(String message) {
+		super(message);
+	}
+	
 	@Override
 	public String toString(){
 		return "ERROR IN THE CONFIGURATION OF " + filename + " LOG FILE WRITTEN TO: " + logFile;
