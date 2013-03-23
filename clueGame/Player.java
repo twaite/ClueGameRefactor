@@ -16,7 +16,13 @@ public class Player {
 		cards = new ArrayList<Card>();
 	}
 	
-	public Player(String name, int location) {
+	public Player(String name, int location ) {
+		this.name = name;
+		this.location = location;
+		cards = new ArrayList<Card>();
+	}
+	
+	public Player(String name, int location, Color color) {
 		this.name = name;
 		this.location = location;
 		cards = new ArrayList<Card>();
