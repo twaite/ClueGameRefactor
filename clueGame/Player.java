@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Player {
-	public Color purple = new Color(255, 0, 255);
 	private String name;
 	private ArrayList<Card> cards;
 	private Color color;
@@ -15,7 +14,7 @@ public class Player {
 		name = null;
 		cards = new ArrayList<Card>();
 	}
-	
+
 	public Player(String name, int location ) {
 		this.name = name;
 		this.location = location;
@@ -26,6 +25,7 @@ public class Player {
 		this.name = name;
 		this.location = location;
 		cards = new ArrayList<Card>();
+		this.color = color;
 	}
 	
 	public void addCard(Card card) {

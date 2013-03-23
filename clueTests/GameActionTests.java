@@ -24,7 +24,6 @@ import clueGame.Suggestion;
 
 public class GameActionTests {
 	
-	Color purple = new Color(255, 0, 255);
 	Board board;
 	Solution solution;
 	ArrayList<BoardCell> cells;
@@ -50,8 +49,7 @@ public class GameActionTests {
 	
 	@Before
 	public void initialize() {
-		
-		Solution solution = new Solution("Miss Scarlet", "Pool Room", "Candlestick");
+		Solution solution = new Solution("Miss Scarlet", "Study", "Candlestick");
 		board = new Board();
 		try{
 			board.loadConfigFiles();
@@ -102,7 +100,7 @@ public class GameActionTests {
 		Player mustardPlayer = new Player();
 		for ( Player p : players ) {
 			cardsDealt += p.getCards().size();
-			assertTrue( (p.getCards().size() == 2) || (p.getCards().size() == 3) );
+			assertTrue( p.getCards().size() == 3 );
 			if ( p.getCards().contains(mustardCard) ) {
 				mustardPlayer = p;
 				players.remove(p); // Removes p from the list so we can search the rest later.
@@ -110,7 +108,7 @@ public class GameActionTests {
 		}
 
 		//CHECK THAT THE NUMBER OF CARDS DEALT IS CORRECT
-		assertEquals(15, cardsDealt);
+		assertEquals(18, cardsDealt);
 
 		//CHECK TO SEE THAT THE SAME CARD WASN'T DEALT TO 2 PEOPLE:
 		for ( Player play : players ) {
@@ -132,14 +130,14 @@ public class GameActionTests {
 		assertEquals("Mrs. White", players.get(2).getName());
 		assertEquals("Colonel Mustard", players.get(3).getName());
 		assertEquals("Professor Plum", players.get(4).getName());
-		assertEquals("Miss Peacock", players.get(5).getName());
+		assertEquals("Mrs. Peacock", players.get(5).getName());
 
 		// CHECK THAT THE COLOR IS CORRECT FOR EACH PLAYER
 		assertEquals(Color.red, players.get(0).getColor());
 		assertEquals(Color.green, players.get(1).getColor());
 		assertEquals(Color.white, players.get(2).getColor());
 		assertEquals(Color.yellow, players.get(3).getColor());
-		assertEquals(purple, players.get(4).getColor());
+		assertEquals(Color.magenta, players.get(4).getColor());
 		assertEquals(Color.blue, players.get(5).getColor());
 		
 	}
@@ -147,7 +145,7 @@ public class GameActionTests {
 	@Test
 	public void TestLoadCards() {
 		//CHECK THAT DECK HAS CORRECT NUMBER OF CARDS
-		assertEquals(18, cards.size());
+		assertEquals(21, cards.size());
 		int numWeapons = 0;
 		int numPeople = 0;
 		int numRooms = 0;
@@ -163,7 +161,7 @@ public class GameActionTests {
 
 		assertEquals(6, numWeapons);
 		assertEquals(6, numPeople);
-		assertEquals(6, numRooms);
+		assertEquals(9, numRooms);
 
 		//CHECK THAT DECK CONTAINS 3 SPECIFIC NAMED CARDS
 		assertTrue(cards.contains(mustardCard));
@@ -175,16 +173,16 @@ public class GameActionTests {
 	@Test
 	public void TestCheckAccusation() {
 		//ACCUSATION IS CORRECT
-		assertTrue(game.checkAccusation(new Solution("Miss Scarlet", "Pool Room", "Candlestick")));
+		assertTrue(game.checkAccusation(new Solution("Miss Scarlet", "Study", "Candlestick")));
 
 		//ACCUSATION IS INCORRECT - PERSON IS WRONG
-		assertFalse(game.checkAccusation(new Solution("a", "Pool Room", "Candlestick")));
+		assertFalse(game.checkAccusation(new Solution("a", "Study", "Candlestick")));
 
 		//ACCUSATION IS INCORRECT - ROOM IS WRONG
 		assertFalse(game.checkAccusation(new Solution("Miss Scarlet", "b", "Candlestick")));
 
 		//ACCUSATION IS INCORRECT - WEAPON IS WRONG
-		assertFalse(game.checkAccusation(new Solution("Miss Scarlet", "Pool Room", "c")));
+		assertFalse(game.checkAccusation(new Solution("Miss Scarlet", "Study", "c")));
 
 		//ACCUSATION IS INCORRECT - ALL THREE ARE WRONG
 		assertFalse(game.checkAccusation(new Solution("a", "b", "c")));
@@ -316,7 +314,7 @@ public class GameActionTests {
 				compPlayers.get(3).createSuggestion("Convervatory");
 				assertEquals(null, game.handleSuggestion(human));
 				
-				human.createSuggestion("Miss Scarlett", "Conservatory", "Pipe");
+				human.createSuggestion("Miss Scarlett", "Conservatory", "Lead Pipe");
 				int compOne = 0;
 				int compTwo = 0;
 				int compThree = 0;
@@ -325,7 +323,7 @@ public class GameActionTests {
 					String response = game.handleSuggestion(human).getName();
 					if ( response == "Miss Scarlet" ) 
 						compOne++;
-					else if ( response == "Pipe" )
+					else if ( response == "Lead Pipe" )
 						compTwo++;
 					else if ( response == "Conservatory" ) 
 						compThree++;
