@@ -308,10 +308,20 @@ public class GameActionTests {
 		player.updateSeen(candlestickCard);
 		player.updateSeen(wrenchCard);
 		player.updateSeen(daggerCard);
-		player.createSuggestion("Kitchen");
 		
+		int greenPick = 0;
+		int mustardPick = 0;
 		
+		for(int i = 0; i < 100; ++i) {
+			player.createSuggestion("Kitchen");
+			if(player.getSuggestion().getPerson() == "Mr. Green")
+				greenPick++;
+			if(player.getSuggestion().getPerson() == "Colonel Mustard")
+				mustardPick = 0;
+		}
 		
+		assertTrue(greenPick > 1);
+		assertTrue(mustardPick > 1);
 		assertEquals("Revolver", player.getSuggestion().getWeapon());
 		assertEquals("Kitchen", player.getSuggestion().getRoom());
 	}
