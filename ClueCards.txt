@@ -1,0 +1,21 @@
+Colonel Mustard, person
+Miss Scarlet, person
+Professor Plum, person
+Mr. Green, person
+Mrs. White, person
+Mrs. Peacock, person
+Candlestick, weapon
+Dagger, weapon
+Lead Pipe, weapon
+Revolver, weapon
+Rope, weapon
+Wrench, weapon
+Kitchen, room
+Conservatory, room
+Ballroom, room
+Billiard room, room
+Library, room
+Study, room
+Dining room, room
+Lounge, room
+Hall, room
