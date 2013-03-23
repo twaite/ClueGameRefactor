@@ -32,10 +32,13 @@ public class GameActionTests {
 	ArrayList<Card> cards;
 	Card mustardCard;
 	Card scarletCard;
+	Card plumCard;
 	Card candlestickCard;
+	Card revolverCard;
 	Card pipeCard;
 	Card studyCard;
 	Card kitchenCard;
+	Card conservatoryCard;
 	
 	@Before
 	public void initialize() {
@@ -56,10 +59,13 @@ public class GameActionTests {
 		cards = game.getCards();
 		mustardCard = new Card(Card.cardType.PERSON, "Colonel Mustard");
 		scarletCard = new Card(Card.cardType.PERSON, "Miss Scarlet");
+		plumCard = new Card(Card.cardType.PERSON, "Mr. Plum");
 		candlestickCard = new Card(Card.cardType.WEAPON, "Candlestick");
+		revolverCard = new Card(Card.cardType.WEAPON, "Revolver");
 		pipeCard = new Card(Card.cardType.WEAPON, "Lead Pipe");
 		kitchenCard = new Card(Card.cardType.ROOM, "Kitchen");
 		studyCard = new Card(Card.cardType.ROOM, "Study");
+		conservatoryCard = new Card(Card.cardType.ROOM, "Conservatory");
 
 	}
 
@@ -166,8 +172,6 @@ public class GameActionTests {
 	@Test
 	public void testTargetRandomSelection() {
 		ComputerPlayer player = new ComputerPlayer();
-		System.out.println(board.getNumColumns());
-		System.out.println(board.getNumRows());
 		// Pick a location with no rooms in target, just four targets
 		board.calcTargets(2, 8, 2);
 		int loc_0_8_Tot = 0;
@@ -201,7 +205,7 @@ public class GameActionTests {
 	}
 
 	@Test
-	public void TestDisproveSuggestion() {
+	public void TestDisproveSuggestionOnePlayerOneMatch() {
 		//test one player, one correct match
 		Player player = new ComputerPlayer();
 		
@@ -214,60 +218,63 @@ public class GameActionTests {
 		player.addCard(kitchenCard);
 		
 		//disproveSuggestion tests
-		assertEquals("Revolver", player.disproveSuggestion(mustardCard, studyCard, new Card(Card.cardType.WEAPON, "revolver")));
-		assertEquals("Conservatory", player.disproveSuggestion(mustardCard, new Card(Card.cardType.ROOM, "Conservatory"), pipeCard));
-		assertEquals("Mr. Plum", player.disproveSuggestion(new Card(Card.cardType.PERSON, "Mr. Plum"), studyCard, pipeCard));
+		assertEquals("Revolver", player.disproveSuggestion(mustardCard, studyCard, revolverCard));
+		assertEquals("Conservatory", player.disproveSuggestion(mustardCard, conservatoryCard, pipeCard));
+		assertEquals("Mr. Plum", player.disproveSuggestion(plumCard, studyCard, pipeCard));
 		assertEquals(null , player.disproveSuggestion(mustardCard, studyCard, pipeCard));
 		
+	}
+	
+	@Test
+	public void TestDisproveSuggestionOnePlayerMultipleMatch() {
+		Player player = new ComputerPlayer();
+		
 		//test one player, multiple possible matches
-		player = new ComputerPlayer();
-		player.addCard(mustardCard);
-		player.addCard(kitchenCard);
-		player.addCard(pipeCard);
-		
-		//Run 100 times
-		int mustardDisp = 0;
-		int kitchenDisp = 0;
-		int pipeDisp = 0;
-		
-		for(int i = 0; i < 100; ++i) {
-			String dispCard = player.disproveSuggestion(scarletCard, studyCard, candlestickCard);
-			if ( dispCard == mustardCard.getName() )
-				mustardDisp++;
-			else if ( dispCard == kitchenCard.getName() )
-				kitchenDisp++;
-			else if ( dispCard == pipeCard.getName() ) 
-				pipeDisp++;
-			else 
-				fail("Gave card player does not have");
-		}
-		
-		//check that each card was given at least once
-		assertTrue( mustardDisp > 1 );
-		assertTrue( kitchenDisp > 1 );
-		assertTrue( pipeDisp > 1 );
-		
+				player = new ComputerPlayer();
+				player.addCard(mustardCard);
+				player.addCard(kitchenCard);
+				player.addCard(pipeCard);
+				
+				//Run 100 times
+				int mustardDisp = 0;
+				int kitchenDisp = 0;
+				int pipeDisp = 0;
+				
+				for(int i = 0; i < 100; ++i) {
+					String dispCard = player.disproveSuggestion(scarletCard, studyCard, candlestickCard);
+					if ( dispCard == mustardCard.getName() )
+						mustardDisp++;
+					else if ( dispCard == kitchenCard.getName() )
+						kitchenDisp++;
+					else if ( dispCard == pipeCard.getName() ) 
+						pipeDisp++;
+					else 
+						fail("Gave card player does not have");
+				}
+				
+				//check that each card was given at least once
+				assertTrue( mustardDisp > 1 );
+				assertTrue( kitchenDisp > 1 );
+				assertTrue( pipeDisp > 1 );
+	}
+	@Test
+	public void TestPlayersQueried() {
 		//test all players are queried
-		players = new ArrayList<Player>();
-		for(int i = 0; i < 5; ++i) {
-			players.add(new ComputerPlayer());
-		}
-		players.get(0).addCard(mustardCard);
-		players.get(1).addCard(scarletCard);
-		players.get(2).addCard(pipeCard);
-		players.get(3).addCard(candlestickCard);
-		players.get(4).addCard(studyCard);
-		players.add(new HumanPlayer());
-		players.get(5).addCard(kitchenCard);
-		
-		Card plumCard = new Card(Card.cardType.PERSON, "Mr. Plum");
-		Card revolverCard = new Card(Card.cardType.WEAPON, "Revolver");
-		Card libraryCard = new Card(Card.cardType.ROOM, "Library");
-		
-		//test no players can disprove
-		assertTrue(game.handleSuggestion(plumCard, revolverCard, libraryCard, players.get(0)) == null);
-		
-		
+				players = new ArrayList<Player>();
+				for(int i = 0; i < 5; ++i) {
+					players.add(new ComputerPlayer());
+				}
+				players.get(0).addCard(mustardCard);
+				players.get(1).addCard(scarletCard);
+				players.get(2).addCard(pipeCard);
+				players.get(3).addCard(candlestickCard);
+				players.get(4).addCard(studyCard);
+				players.add(new HumanPlayer());
+				players.get(5).addCard(kitchenCard);
+				
+				Card plumCard = new Card(Card.cardType.PERSON, "Mr. Plum");
+				Card revolverCard = new Card(Card.cardType.WEAPON, "Revolver");
+				Card libraryCard = new Card(Card.cardType.ROOM, "Library");
 	}
 			
 
