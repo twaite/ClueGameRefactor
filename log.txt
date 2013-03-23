@@ -1,0 +1,23 @@
+commit 4660244ffbd00d7232f332e8c06ccfd34292225e
+Author: Timothy Waite <twaite@mines.edu>
+Date:   Mon Mar 18 16:31:27 2013 -0600
+
+    final commit
+
+commit aec38db49cf873bbc750c67ca6734d94da3bd1cb
+Author: Timothy Waite <twaite@mines.edu>
+Date:   Sun Mar 10 18:34:26 2013 -0600
+
+    refactored all but calcTargets and calcAdjacencies in board
+
+commit c8a9d5e7513f3ed737c3638b65cec774468b32be
+Author: Timothy Waite <twaite@mines.edu>
+Date:   Sun Mar 10 13:19:38 2013 -0600
+
+    refactored through loadRoomConfig
+
+commit 08056eb210955481fb2bb14f00a0f9c786119ad5
+Author: Timothy Waite <twaite@mines.edu>
+Date:   Sun Mar 10 12:39:25 2013 -0600
+
+    first commit
