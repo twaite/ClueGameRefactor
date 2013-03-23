@@ -10,4 +10,8 @@ public class HumanPlayer extends Player {
 		super(name, location);
 	}
 	
+	public void createSuggestion(String person, String room, String weapon) {
+		
+	}
+	
 }

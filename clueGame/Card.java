@@ -20,11 +20,11 @@ public class Card{
 	}
 	
 	public cardType getType() {
-		return type;
+		return null;
 	}
 	
 	public String getName() {
-		return name;
+		return null;
 	}
 	
 	public void setType(cardType newType) {
@@ -34,4 +34,6 @@ public class Card{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
 }

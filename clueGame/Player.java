@@ -9,6 +9,7 @@ public class Player {
 	private ArrayList<Card> cards;
 	private Color color;
 	private int location;
+	private Suggestion suggestion;
 	
 	public Player() {
 		name = null;
@@ -28,6 +29,10 @@ public class Player {
 	public String disproveSuggestion(Card name, Card room, Card weapon) {
 		return null;
 	}
+	
+	public String disproveSuggestion(Suggestion suggestion) {
+		return null;
+	}
 
 	public String getName() {
 		return name;
@@ -39,6 +44,12 @@ public class Player {
 	
 	public ArrayList<Card> getCards() {
 		return cards;
+	}
+	
+	public void createSuggestion() {}
+	
+	public Suggestion getSuggestion() {
+		return new Suggestion();
 	}
 
 

@@ -19,10 +19,6 @@ public class ClueGame {
 	public void selectAnswer() {
 		
 	}
-	
-	public String handleSuggestion(Card person, Card room, Card weapon, Player accusingPerson) {
-		return null;
-	}
 
 	public boolean checkAccusation() {
 		return true;
@@ -43,5 +39,13 @@ public class ClueGame {
 	public void setSolution(Solution solution) {
 		this.solution = solution;
 	}
-
+	
+	public void setWhoseTurn(String name) {
+		
+	}
+	
+	public Card handleSuggestion(Player player) {
+		return new Card();
+	}
+	
 }

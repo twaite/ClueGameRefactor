@@ -23,10 +23,6 @@ public class ComputerPlayer extends Player {
 		
 	}
 	
-	public Suggestion getSuggestion() {
-		return new Suggestion();
-	}
-	
 	public void updateSeen(Card seen) {
 		
 	}

@@ -20,6 +20,7 @@ import clueGame.ComputerPlayer;
 import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
+import clueGame.Suggestion;
 
 public class GameActionTests {
 	
@@ -44,6 +45,7 @@ public class GameActionTests {
 	Card pipeCard;
 	Card studyCard;
 	Card kitchenCard;
+	Card libraryCard;
 	Card conservatoryCard;
 	
 	@Before
@@ -79,9 +81,12 @@ public class GameActionTests {
 		wrenchCard = new Card(Card.cardType.WEAPON, "Wrench");
 		revolverCard = new Card(Card.cardType.WEAPON, "Revolver");
 		pipeCard = new Card(Card.cardType.WEAPON, "Lead Pipe");
+		
+		//Rooms
 		kitchenCard = new Card(Card.cardType.ROOM, "Kitchen");
 		studyCard = new Card(Card.cardType.ROOM, "Study");
 		conservatoryCard = new Card(Card.cardType.ROOM, "Conservatory");
+		libraryCard = new Card(Card.cardType.ROOM, "Library");
 
 	}
 
@@ -277,21 +282,60 @@ public class GameActionTests {
 	@Test
 	public void TestPlayersQueried() {
 		//test all players are queried
-				players = new ArrayList<Player>();
-				for(int i = 0; i < 5; ++i) {
-					players.add(new ComputerPlayer());
-				}
-				players.get(0).addCard(mustardCard);
-				players.get(1).addCard(scarletCard);
-				players.get(2).addCard(pipeCard);
-				players.get(3).addCard(candlestickCard);
-				players.get(4).addCard(studyCard);
-				players.add(new HumanPlayer());
-				players.get(5).addCard(kitchenCard);
+				ArrayList<ComputerPlayer> compPlayers = new ArrayList<ComputerPlayer>();
 				
-				Card plumCard = new Card(Card.cardType.PERSON, "Mr. Plum");
-				Card revolverCard = new Card(Card.cardType.WEAPON, "Revolver");
-				Card libraryCard = new Card(Card.cardType.ROOM, "Library");
+				ComputerPlayer player = new ComputerPlayer("Mr. Plum", board.calcIndex(18, 3));
+				player.addCard(mustardCard);
+				compPlayers.add(player);
+				compPlayers.get(0).updateSeen(scarletCard);
+				compPlayers.get(0).updateSeen(pipeCard);
+				compPlayers.get(0).updateSeen(studyCard);
+				compPlayers.get(0).updateSeen(conservatoryCard);
+				
+				player = new ComputerPlayer("Colonel Mustard", board.calcIndex(2,22));
+				compPlayers.add(player);
+				compPlayers.get(1).addCard(scarletCard);
+				
+				player = new ComputerPlayer();
+				compPlayers.add(player);
+				compPlayers.get(2).addCard(pipeCard);
+				
+				player = new ComputerPlayer("Miss Scarlet" , board.calcIndex(1, 1));
+				compPlayers.add(player);
+				compPlayers.get(3).addCard(conservatoryCard);
+				
+				HumanPlayer human = new HumanPlayer();
+				human.addCard(studyCard);
+				
+				compPlayers.get(0).createSuggestion("kitchen");
+				assertEquals(null, game.handleSuggestion(compPlayers.get(0)));
+				
+				compPlayers.get(1).createSuggestion("study");
+				assertEquals("Study", game.handleSuggestion(human));
+				
+				compPlayers.get(3).createSuggestion("Convervatory");
+				assertEquals(null, game.handleSuggestion(human));
+				
+				human.createSuggestion("Miss Scarlett", "Conservatory", "Pipe");
+				int compOne = 0;
+				int compTwo = 0;
+				int compThree = 0;
+				
+				for ( int i = 0; i < 100; ++i ) {
+					String response = game.handleSuggestion(human).getName();
+					if ( response == "Miss Scarlet" ) 
+						compOne++;
+					else if ( response == "Pipe" )
+						compTwo++;
+					else if ( response == "Conservatory" ) 
+						compThree++;
+					else
+						fail("Gave card player does not have");
+				}
+				
+				assertTrue(compOne > 1);
+				assertTrue(compTwo > 1);
+				assertTrue(compThree > 1);
 	}
 			
 	@Test
