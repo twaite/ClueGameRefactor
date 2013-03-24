@@ -116,15 +116,13 @@ public class ClueGame {
 		}
 	}
 	
-	public void selectAnswer() {
-		
-	}
-
-	public boolean checkAccusation() {
-		return true;
+	public void selectAnswer(Solution s) {
+		solution = s;
 	}
 
 	public boolean checkAccusation(Solution solution) {
+		if ( this.solution.equals(solution))
+			return true;
 		return false;
 	}
 
@@ -144,8 +142,21 @@ public class ClueGame {
 		
 	}
 	
-	public Card handleSuggestion(Player player) {
-		return new Card();
+	public String handleSuggestion(Player player) {
+		Random rand = new Random();
+		String disprove;
+		int index = 0;
+		int r = 0;
+		ArrayList<Player> p = new ArrayList(players);
+		p.remove(player);
+		r = rand.nextInt(p.size());
+		for ( int i = 0; i < p.size(); ++i ) {
+			index = (i + r) % p.size();
+			disprove = p.get(index).disproveSuggestion(player.getSuggestion());
+			if ( disprove != null)
+				return disprove;
+		}
+		return null;
 	}
 	
 }

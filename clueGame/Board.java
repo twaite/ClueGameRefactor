@@ -33,7 +33,7 @@ public class Board {
 		adjMtx = new HashMap<Integer, LinkedList<Integer>>();
 		targets = new HashSet<BoardCell>();
 		configFileName = "ClueLayout.csv";
-		legendFileName = "clueLegend.txt";
+		legendFileName = "ClueLegend.txt";
 	}
 	
 	

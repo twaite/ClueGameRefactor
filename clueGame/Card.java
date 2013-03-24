@@ -18,7 +18,7 @@ public class Card{
 	@Override
 	public boolean equals(Object o) {
 		Card c = (Card) o;
-		if(name.equals(c.getName()) && type.equals(c.getType()))
+		if(name.equals(c.name) && type.equals(c.type))
 			return true;
 		return false;
 	}

@@ -66,7 +66,18 @@ public class Player {
 	}
 	
 	public String disproveSuggestion(Suggestion suggestion) {
-		return null;
+		Card person = new Card(Card.cardType.PERSON, suggestion.getPerson());
+		Card room = new Card(Card.cardType.ROOM, suggestion.getRoom());
+		Card weapon = new Card(Card.cardType.WEAPON, suggestion.getWeapon());
+		return disproveSuggestion(person, room, weapon);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		Player p = (Player) o;
+		if ( name.equals(p.name) )
+			return true;
+		return false;
 	}
 	
 	public void createSuggestion() {}
@@ -77,6 +88,11 @@ public class Player {
 	
 	public Color getColor() {
 		return color;
+	}
+	
+	//Only for testing.
+	public void clearCards() {
+		cards = new ArrayList<Card>();
 	}
 	
 	public ArrayList<Card> getCards() {

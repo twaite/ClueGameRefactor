@@ -20,4 +20,12 @@ public class Solution {
 	public String toString() {
 		return person + " " + room + " " + weapon;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		Solution s = (Solution) o;
+		if(person.equals(s.person) && room.equals(s.room) && weapon.equals(s.weapon))
+			return true;
+		return false;
+	}
 }

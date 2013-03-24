@@ -9,7 +9,7 @@ public class Suggestion {
 		person = "";
 	}
 	
-	public Suggestion(String room, String weapon, String person) {
+	public Suggestion(String person, String room, String weapon) {
 		this.room = room;
 		this.weapon = weapon;
 		this.person = person;
@@ -25,5 +25,9 @@ public class Suggestion {
 	
 	public String getPerson() {
 		return person;
+	}
+	
+	public String toString() {
+		return person + " " + room + " " + weapon;
 	}
 }
