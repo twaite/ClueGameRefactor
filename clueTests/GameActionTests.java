@@ -54,13 +54,15 @@ public class GameActionTests {
 		try{
 			board.loadConfigFiles();
 		}
-		catch(BadConfigFormatException e){
+		catch(BadConfigFormatException e) {
 			e = new BadConfigFormatException(board);
 			System.out.println(e.toString());
 		}
+		
 		cells = board.getCells();
 		game = new ClueGame();
 		game.loadConfigFiles();
+		game.deal();
 		players = game.getPlayers();
 		cards = game.getCards();
 		
@@ -96,26 +98,33 @@ public class GameActionTests {
 	@Test
 	public void TestDeal() {
 		int cardsDealt = 0;
+		//game.deal();
+		//players = game.getPlayers();
 		//COUNT THE NUMBER OF CARDS DEALT
 		Player mustardPlayer = new Player();
-		for ( Player p : players ) {
-			cardsDealt += p.getCards().size();
-			assertTrue( p.getCards().size() == 3 );
-			if ( p.getCards().contains(mustardCard) ) {
-				mustardPlayer = p;
-				players.remove(p); // Removes p from the list so we can search the rest later.
-			}
+		for ( int i = 0; i < players.size(); ++i ) {
+			cardsDealt += players.get(i).getCards().size();
+			System.out.println(players.get(i).getCards().size());
+			assertTrue( players.get(i).getCards().size() == 3 );
 		}
 
 		//CHECK THAT THE NUMBER OF CARDS DEALT IS CORRECT
 		assertEquals(18, cardsDealt);
 
 		//CHECK TO SEE THAT THE SAME CARD WASN'T DEALT TO 2 PEOPLE:
+		int mustardCardNumber = 0;
+		int studyCardNumber = 0;
+		int ropeCardNumber = 0;
 		for ( Player play : players ) {
-			assertFalse(play.getCards().contains(mustardCard));
+			for ( Card c : play.getCards() ) {
+				if (c.getName().equals("Colonel Mustard")) mustardCardNumber++;
+				if (c.getName().equals("Study")) studyCardNumber++;
+				if (c.getName().equals("Rope")) ropeCardNumber++;
+			}
 		}
-		players.add(mustardPlayer);
-
+		assertTrue(mustardCardNumber < 2);
+		assertTrue(studyCardNumber < 2);
+		assertTrue(ropeCardNumber < 2);
 	}
 
 	@Test
@@ -164,9 +173,20 @@ public class GameActionTests {
 		assertEquals(9, numRooms);
 
 		//CHECK THAT DECK CONTAINS 3 SPECIFIC NAMED CARDS
-		assertTrue(cards.contains(mustardCard));
-		assertTrue(cards.contains(pipeCard));
-		assertTrue(cards.contains(kitchenCard));
+		int mustardCardNumber = 0;
+		int studyCardNumber = 0;
+		int ropeCardNumber = 0;
+		
+		for ( Card c : cards ) {
+			if (c.getName().equals("Colonel Mustard")) mustardCardNumber++;
+			if (c.getName().equals("Study")) studyCardNumber++;
+			if (c.getName().equals("Rope")) ropeCardNumber++;
+		}
+		
+		assertEquals(1, mustardCardNumber);
+		assertEquals(1, studyCardNumber);
+		assertEquals(1, ropeCardNumber);
+
 
 	}
 
@@ -189,7 +209,7 @@ public class GameActionTests {
 	}
 
 	@Test
-	public void testTargetRandomSelection() {
+	public void TestTargetRandomSelection() {
 		ComputerPlayer player = new ComputerPlayer();
 		// Pick a location with no rooms in target, just four targets
 		board.calcTargets(2, 8, 2);

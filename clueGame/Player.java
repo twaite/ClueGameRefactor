@@ -2,15 +2,16 @@ package clueGame;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.sun.org.apache.bcel.internal.classfile.Field;
 
 public class Player {
-	private String name;
-	private ArrayList<Card> cards;
-	private Color color;
-	private int location;
-	private Suggestion suggestion;
+	protected String name;
+	protected ArrayList<Card> cards;
+	protected Color color;
+	protected int location;
+	protected Suggestion suggestion;
 	
 	public Player() {
 		name = null;
@@ -30,11 +31,37 @@ public class Player {
 		this.color = convertColor(color);
 	}
 	
-	public void addCard(Card card) {
-		
+	public Player(Player other) {
+		this.name = other.name;
+		this.location = other.location;
+		this.color = other.color;
+		this.cards = new ArrayList<Card>(other.cards);
 	}
 	
-	public String disproveSuggestion(Card name, Card room, Card weapon) {
+	public void addCard(Card card) {
+		cards.add(card);
+	}
+	
+	public String disproveSuggestion(Card person, Card room, Card weapon) {
+		Random rand = new Random();
+		int r = 0;
+		ArrayList<Card> temp = new ArrayList<Card>();
+
+		// If the player has any of the cards, add them to a temporary list.
+		if ( cards.contains(person) )
+			temp.add(person);
+		if ( cards.contains(room) )
+			temp.add(room);
+		if ( cards.contains(weapon) )
+			temp.add(weapon);
+		
+		// If the player has any of the cards, return one of them (randomly pick)
+		if ( temp.size() > 0) {	
+			r = rand.nextInt(temp.size());
+			return temp.get(r).getName();
+		}
+		// Else don't return any cards
+		
 		return null;
 	}
 	
@@ -57,7 +84,7 @@ public class Player {
 	}
 	
 	public Suggestion getSuggestion() {
-		return new Suggestion();
+		return suggestion;
 	}
 	
 	public Color convertColor(String strColor) {

@@ -15,8 +15,16 @@ public class Card{
 		this.name = name;
 	}
 	
-	public boolean equals(Object obj) {
-		return true;
+	@Override
+	public boolean equals(Object o) {
+		Card c = (Card) o;
+		if(name.equals(c.getName()) && type.equals(c.getType()))
+			return true;
+		return false;
+	}
+	
+	public String toString() {
+		return name;
 	}
 	
 	public cardType getType() {
@@ -24,7 +32,7 @@ public class Card{
 	}
 	
 	public String getName() {
-		return null;
+		return name;
 	}
 	
 	public void setType(cardType newType) {
@@ -34,6 +42,5 @@ public class Card{
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 }

@@ -66,8 +66,6 @@ public class ClueGame {
 				sep = input.split(", ");
 				name = sep[0];
 				type = sep[1];
-				System.out.println(" ," + name + ", ");
-				System.out.println(" ," + type + ", ");
 				if ( type.equals("person") ) {
 					cards.add(new Card(Card.cardType.PERSON, name));
 				} else if (type.equals("room") ) {
@@ -77,7 +75,6 @@ public class ClueGame {
 				} else
 					throw new BadConfigFormatException("Card file has bad format");
 			}
-			System.out.println(cards.size());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -87,35 +84,35 @@ public class ClueGame {
 		Card card;
 		String person = "", weapon = "", room = "";
 		Random r = new Random();
-		ArrayList<Card> c = cards;
-		int rand;
+		ArrayList<Card> c = new ArrayList<Card>(cards);
+		int rand = 0;
 		while ( true ) {
 			rand = r.nextInt(c.size());
 			card = c.get(rand);
-			if ( card.getType() == Card.cardType.PERSON ) {
+			if ( card.getType() == Card.cardType.PERSON && person == "") {
 				person = card.getName();
 				c.remove(rand);
 			}
-			else if ( card.getType() == Card.cardType.ROOM ) {
+			else if ( card.getType() == Card.cardType.ROOM && room == "") {
 				room = card.getName();
 				c.remove(rand);
 			}
-			else if ( card.getType() == Card.cardType.WEAPON ) {
+			else if ( card.getType() == Card.cardType.WEAPON && weapon == "") {
 				weapon = card.getName();
 				c.remove(rand);
 			}
 			if ( person != "" && room != "" && weapon != "" )
 				break;			
 		}
-		solution = new Solution(person, room, weapon);
 		
-		while ( c.size() > 0 ) {
-			rand = r.nextInt(c.size());
-			for ( int i = 0; i < 6; ++ i) {
-				players.get(i).addCard(c.get(rand));
-				c.remove(rand);
-			}
+		solution = new Solution(person, room, weapon);
 			
+		int i = 0;
+		while( c.size() > 0) {
+			rand = r.nextInt(c.size());
+			players.get(i).addCard(c.get(rand));
+			c.remove(rand);
+			i = (i + 1) % 6;
 		}
 	}
 	
