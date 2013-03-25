@@ -64,7 +64,6 @@ public class GameActionTests {
 		game.deal();
 		players = game.getPlayers();
 		cards = game.getCards();
-		game.setSolution( new Solution("Miss Scarlet", "Study", "Candlestick") );
 		
 		//Characters
 		mustardCard = new Card(Card.cardType.PERSON, "Colonel Mustard");
@@ -191,6 +190,7 @@ public class GameActionTests {
 
 	@Test
 	public void TestCheckAccusation() {
+		game.setSolution( new Solution("Miss Scarlet", "Study", "Candlestick") );
 		//ACCUSATION IS CORRECT
 		assertTrue(game.checkAccusation(new Solution("Miss Scarlet", "Study", "Candlestick")));
 
@@ -302,74 +302,66 @@ public class GameActionTests {
 	
 	@Test
 	public void TestPlayersQueried() {
-		//test all players are queried
-				ArrayList<ComputerPlayer> compPlayers = new ArrayList<ComputerPlayer>();
-				cards = new ArrayList<Card>();
-				cards.add(mustardCard);
-				cards.add(pipeCard);
-				cards.add(scarletCard);
-				cards.add(conservatoryCard);
-				cards.add(studyCard);
-				cards.add(ropeCard);
-				cards.add(greenCard);
-				
-				ComputerPlayer player = new ComputerPlayer("Professor Plum", board.calcIndex(21, 3));
-				player.clearCards();
-				player.addCard(mustardCard);
-				compPlayers.add(player);
-				compPlayers.get(0).updateSeen(scarletCard);
-				compPlayers.get(0).updateSeen(pipeCard);
-				compPlayers.get(0).updateSeen(studyCard);
-				compPlayers.get(0).updateSeen(conservatoryCard);
-				
-				player = new ComputerPlayer("Colonel Mustard", board.calcIndex(0, 22));
-				player.clearCards();
-				compPlayers.add(player);
-				compPlayers.get(1).addCard(scarletCard);
-				
-				player = new ComputerPlayer();
-				player.clearCards();
-				compPlayers.add(player);
-				compPlayers.get(2).addCard(pipeCard);
-				
-				player = new ComputerPlayer("Miss Scarlet", board.calcIndex(1, 1));
-				player.clearCards();
-				compPlayers.add(player);
-				compPlayers.get(3).addCard(conservatoryCard);
-				
-				HumanPlayer human = new HumanPlayer();
-				player.clearCards();
-				human.addCard(studyCard);
-				
-				compPlayers.get(0).createSuggestion("Kitchen", cards);
-				assertEquals(null, game.handleSuggestion(compPlayers.get(0)));
-				
-				compPlayers.get(1).createSuggestion("Study", cards);
-				assertEquals("Study", game.handleSuggestion(human));
-				
-				compPlayers.get(3).createSuggestion("Convervatory", cards);
-				assertEquals(null, game.handleSuggestion(human));
-				
-				human.createSuggestion("Miss Scarlet", "Conservatory", "Lead Pipe");
-				int compOne = 0;
-				int compTwo = 0;
-				int compThree = 0;
-				
-				for ( int i = 0; i < 100; ++i ) {
-					String response = game.handleSuggestion(human);
-					if ( response == "Miss Scarlet" ) 
-						compOne++;
-					else if ( response == "Lead Pipe" )
-						compTwo++;
-					else if ( response == "Conservatory" ) 
-						compThree++;
-					else
-						fail("Gave card player does not have");
-				}
-				
-				assertTrue(compOne > 1);
-				assertTrue(compTwo > 1);
-				assertTrue(compThree > 1);
+		
+		//Test a suggestion that nobody can disprove
+		HumanPlayer p = (HumanPlayer) players.get(0);
+		String person = game.getSolution().getPerson();
+		String room = game.getSolution().getRoom();
+		String weapon = game.getSolution().getWeapon();
+		p.createSuggestion(person, room, weapon);
+		assertEquals(null, game.handleSuggestion(p));
+		
+		//Test a suggestion that only a human can disprove
+		ComputerPlayer pl = (ComputerPlayer) players.get(1);
+		Card c = p.getCards().get(0);
+		if (c.getType() == Card.cardType.PERSON) {
+			pl.createSuggestion(c.getName(), room, weapon);
+		} else if (c.getType() == Card.cardType.ROOM) {
+			pl.createSuggestion(person, c.getName(), weapon);
+		} else if (c.getType() == Card.cardType.WEAPON) {
+			pl.createSuggestion(person, room, c.getName());
+		} else {
+			fail("Card has invalid type");
+		}
+		assertEquals(c.getName(), game.handleSuggestion(pl));
+		
+		//Test a suggestion that can only be disproved by the person suggesting it
+		Card d = pl.getCards().get(0);
+		if (d.getType() == Card.cardType.PERSON) {
+			pl.createSuggestion(d.getName(), room, weapon);
+		} else if (d.getType() == Card.cardType.ROOM) {
+			pl.createSuggestion(person, d.getName(), weapon);
+		} else if (d.getType() == Card.cardType.WEAPON) {
+			pl.createSuggestion(person, room, d.getName());
+		} else {
+			fail("Card has invalid type");
+		}
+		assertEquals(null, game.handleSuggestion(pl));
+		
+		p.getCards().remove(2);
+		pl.getCards().remove(2);
+		p.addCard(new Card(Card.cardType.ROOM, room));
+		pl.addCard(new Card(Card.cardType.PERSON, person));
+		
+		ComputerPlayer newPlayer = (ComputerPlayer) players.get(2);
+		
+		newPlayer.createSuggestion(person, room, weapon);
+		
+		int p1 = 0, p2 = 0;
+		
+		for ( int i = 0; i < 100; ++ i) {
+			String disprove = game.handleSuggestion(newPlayer);
+			if ( disprove.equals(person) )
+				++p1;
+			else if ( disprove.equals(room) )
+				++p2;
+			else
+				fail("Wrong player gave a card");
+		}
+		assertTrue(p1 > 0);
+		assertTrue(p2 > 0);
+		
+		
 	}
 			
 	@Test

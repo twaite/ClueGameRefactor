@@ -15,7 +15,7 @@ public class HumanPlayer extends Player {
 	}
 	
 	public void createSuggestion(String person, String room, String weapon) {
-		
+		suggestion = new Suggestion(person, room, weapon);
 	}
 	
 }

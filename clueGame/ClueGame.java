@@ -138,6 +138,10 @@ public class ClueGame {
 		this.solution = solution;
 	}
 	
+	public Solution getSolution() {
+		return solution;
+	}
+	
 	public void setWhoseTurn(String name) {
 		
 	}

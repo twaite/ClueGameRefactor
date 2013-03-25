@@ -28,4 +28,16 @@ public class Solution {
 			return true;
 		return false;
 	}
+
+	public String getPerson() {
+		return person;
+	}
+
+	public String getRoom() {
+		return room;
+	}
+
+	public String getWeapon() {
+		return weapon;
+	}
 }
