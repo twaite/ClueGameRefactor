@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.sun.org.apache.bcel.internal.classfile.Field;
-
 public class Player {
 	protected String name;
 	protected ArrayList<Card> cards;
